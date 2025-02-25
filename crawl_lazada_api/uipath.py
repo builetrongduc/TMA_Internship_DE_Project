@@ -20,7 +20,7 @@ for i in range(1,pageNumber+1):
         "Content-Type": "application/json",
         "X-UIPATH-TenantName": "DefaultTenant",
         "X-UIPATH-OrganizationUnitId": "6338289",
-        "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlJUTkVOMEl5T1RWQk1UZEVRVEEzUlRZNE16UkJPVU00UVRRM016TXlSalUzUmpnMk4wSTBPQSJ9.eyJodHRwczovL3VpcGF0aC9lbWFpbCI6ImFuaGhpZW5kb2FuMTUwNUBnbWFpbC5jb20iLCJodHRwczovL3VpcGF0aC9lbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50LnVpcGF0aC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDgyMTc5NjgxOTExMjQ0MTQxNjkiLCJhdWQiOlsiaHR0cHM6Ly9vcmNoZXN0cmF0b3IuY2xvdWQudWlwYXRoLmNvbSIsImh0dHBzOi8vdWlwYXRoLmV1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3NDAzNzcyMTcsImV4cCI6MTc0MDQ2MzYxNywic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6IjhERXYxQU1OWGN6VzN5NFUxNUxMM2pZZjYyaks5M241In0.JE_6QRixBDPkdkkbKr--S87JVB5xsx7BaSomwP_p7c6undo78RjUMQWgGvwnTXXM3HYzzKEcFyPKVXwqhImN9IKtlLV0tZvKJO6FB4ESAVY96l85EE0cft1x0r0PD3XHEaMv-w-VHLQ36Vq6BUQLkK_FkSEPLMI_ymFZYJOEXywu8v_Od63ta_pg2DQ_UF6QaIXdACbvtGF3o_v_B_brO6_8jHcuIQj7DpsyYZcIZxpdBHZNjd52G976lGZ5TyB3HmM_ILLZK1nZ1lQ6vcs4TrsxPlQWOPTOLKDqRZ17ezDht0bujdAoX9-6QfrRgb_ho43OU9fe18ItE9wA2VJqdA"
+        "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlJUTkVOMEl5T1RWQk1UZEVRVEEzUlRZNE16UkJPVU00UVRRM016TXlSalUzUmpnMk4wSTBPQSJ9.eyJodHRwczovL3VpcGF0aC9lbWFpbCI6ImFuaGhpZW5kb2FuMTUwNUBnbWFpbC5jb20iLCJodHRwczovL3VpcGF0aC9lbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50LnVpcGF0aC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDgyMTc5NjgxOTExMjQ0MTQxNjkiLCJhdWQiOlsiaHR0cHM6Ly9vcmNoZXN0cmF0b3IuY2xvdWQudWlwYXRoLmNvbSIsImh0dHBzOi8vdWlwYXRoLmV1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3NDA0NjUwODIsImV4cCI6MTc0MDU1MTQ4Miwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6IjhERXYxQU1OWGN6VzN5NFUxNUxMM2pZZjYyaks5M241In0.olIpDk-0GAn99B272esKqpDMIuogbvvtNkJ3LKSvWdznb7rwhykO-nyq-y-yffZsSOXDn6B7zdUPwpOf4tCea-iIzlzocRZr_iky67_xxy6rFkNWDtKg-OXI5ECfyNI83Ah8qJwguGXNmBpkIlD8N1D1TTpKTiN2vKHubtbvhqsNn4gttZb6KCNZ6pcqtcKFQJ74EnpvOjRwbOHLqm6FHE4GY_39M-KdTaNvY3OTPJBcdZJ_Iu4GlgiveT5cyuBJop6QjYbd11aw6Kgl_LHBr8DOC6jdh11YIDr7cJyH3r-CO22JT0YuFwoRHfWWcM7Gg5dQ4Cy9jZRA-ifHT9n_xA"
     }
 
     PAYLOAD = {
@@ -76,7 +76,11 @@ for i in range(1,pageNumber+1):
                 "price": item.get("price", ""),
                 "original_price": item.get("originalPrice", ""),
                 "item_sold_count": item.get("itemSoldCntShow", ""),
+                "categories": item.get("categories", ""),
+                "promotion": item["icons"][0].get("text", "") if item.get("icons") and isinstance(item["icons"], list) and item["icons"] else "",
                 "in_stock": item.get("inStock", ""),
+                "stock_num":0,
+                "originalPrice": item.get("originalPrice", ""),
                 "itemURL": "https://www.lazada.vn" + item.get("itemUrl", "")
             }
             list_products.append(product_info)
@@ -84,7 +88,7 @@ for i in range(1,pageNumber+1):
 
 
 import pandas
-df=pandas.DataFrame(list_products,columns=['itemID','name','image','rating_score','review_count','location','seller_name','brand_name','price','original_price','item_sold_count','in_stock','itemURL'])
+df=pandas.DataFrame(list_products,columns=["itemID","name","image","rating_score","review_count","location","seller_name","brand_name","price","original_price","item_sold_count","categories","promotion","in_stock","stock_num","originalPrice","itemURL"])
 print(df.head())
 # Save csv
 df.to_csv(f'{keyword}_lazada_data.csv', index=False)
