@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS AppliedPromotion (
 """
 # DH0001, DH0002
 create_table_order = """
-CREATE TABLE IF NOT EXISTS OrderTable (
+CREATE TABLE IF NOT EXISTS Order (
     ID VARCHAR(10) PRIMARY KEY, 
     CustomerID VARCHAR(10),
     TotalPrice DECIMAL(12,2),
