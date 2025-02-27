@@ -231,8 +231,64 @@ def insertPlatform(cursor):
     cursor.execute(insert_platform)
     print("Thêm dữ liệu vào bảng Platform thành công")
 
+# Fake for Review Table
+import random
+from faker import Faker
 
-insertPlatform(cursor)
+fake=Faker()
+
+
+def fakeRating():
+    rows_products=cursor.execute(f"SELECT * FROM product;")
+    rows_products=cursor.fetchall()
+    df=pd.DataFrame(rows_products)
+    row_customers=cursor.execute(f"SELECT * FROM customer;")
+    row_customers=cursor.fetchall()
+    df_customers=pd.DataFrame(row_customers)
+    df_productinfo=df[['ProductID','Name']]
+    list_productid=df_productinfo['ProductID'].tolist()
+    list_customeid=df_customers['ID'].tolist()
+    list_review=[]
+    for _ in range(100):
+        product_id=random.choice(list_productid)
+        df_name = df_productinfo[df_productinfo["ProductID"] == product_id]
+        # name_product=df_name['Name'].values[0]
+        rating=random.randint(1,5)
+        date=fake.date_between(start_date="-2y", end_date="today").strftime("%Y-%m-%d")
+        customer_id=random.choice(list_customeid)
+        platform_id=random.choice(['SENDO','TIKI','LAZADA'])
+        if rating >=4:
+            opinion='rất tốt. Tôi khá hài lòng với sản phẩm này'
+        elif rating >=3 and rating <4:
+            opinion='cũng tạm. Cần cải thiện hơn'
+        else:
+            opinion='không tốt. Tôi không hài lòng với sản phẩm này'
+        review_text=f'Sản phẩm này {opinion}'
+        review_info={
+            "product_id":product_id,
+            "rating":rating,
+            "review_text":review_text,
+            'date':date,
+            'customer_id':customer_id,
+            'platform_id':platform_id
+        }
+        list_review.append(review_info)
+    
+    # transform list review to dataframe
+    df_review=pd.DataFrame(list_review)
+    df_review.to_csv('reviewData.csv',index=False,encoding='utf-8')
+    
+    for review in list_review:
+        cursor.execute(f"""
+        INSERT INTO Review (ProductID, Rating, Review_text, Date, CustomerID, PlatformID)
+        VALUES ('{review['product_id']}', {review['rating']}, '{review['review_text']}', '{review['date']}', '{review['customer_id']}', '{review['platform_id']}')
+        """)
+        print('DONE')
+
+
+
+# insertPlatform(cursor)
+fakeRating()
 
 conn.commit()
 cursor.close()
