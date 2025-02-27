@@ -285,10 +285,48 @@ def fakeRating():
         """)
         print('DONE')
 
-
+def fakeOrder():
+    row_customers=cursor.execute(f"SELECT * FROM customer;")
+    row_customers=cursor.fetchall()
+    df_customers=pd.DataFrame(row_customers)
+    list_customeid=df_customers['ID'].tolist()
+    list_order=[]
+    for i in range(1,101):
+        if i<10:
+            order_id=f"DH00{i}"
+        elif i<100:
+            order_id=f"DH0{i}"
+        else:
+            order_id=f"DH{i}"
+        customer_id=random.choice(list_customeid)
+        total_price=random.randint(100000,1000000)
+        date=fake.date_between(start_date="-2y", end_date="today").strftime("%Y-%m-%d")
+        payment_method=random.choice(['cash','credit_card','momo'])
+        platform_id=random.choice(['SENDO','TIKI','LAZADA'])
+        order_info={
+            "order_id":order_id,
+            "customer_id":customer_id,
+            "total_price":total_price,
+            'date':date,
+            'payment_method':payment_method,
+            'platform_id':platform_id
+        }
+        list_order.append(order_info)
+    print(list_order)
+    
+    # transform list review to dataframe
+    df_order=pd.DataFrame(list_order)
+    df_order.to_csv('orderData.csv',index=False,encoding='utf-8')
+    
+    for order in list_order:
+        cursor.execute(f"""
+        INSERT INTO `order` (ID, CustomerID, TotalPrice, Date, paymentMethod, PlatformID)
+        VALUES ('{order['order_id']}', '{order['customer_id']}', {order['total_price']}, '{order['date']}', '{order['payment_method']}', '{order['platform_id']}')
+        """)
+        print('DONE ')
 
 # insertPlatform(cursor)
-fakeRating()
+fakeOrder()
 
 conn.commit()
 cursor.close()
