@@ -1,0 +1,25 @@
+ID,Name,Type
+AK01,Áo khoác,Nam
+AK02,Áo khoác,Nữ
+AK03,Áo khoác,Unisex
+ASM01,Áo sơ mi,Nam
+ASM02,Áo sơ mi,Nữ
+ASM03,Áo sơ mi,Unisex
+AT01,Áo thun,Nam
+AT02,Áo thun,Nữ
+AT03,Áo thun,Unisex
+GSD01,Giày sandal,Nam
+GSD02,Giày sandal,Nữ
+GT01,Giày tây,Nam
+GT02,Giày tây,Nữ
+GTT01,Giày thể thao,Nam
+GTT02,Giày thể thao,Nữ
+QD01,Quần đùi,Nam
+QD02,Quần đùi,Nữ
+QD03,Quần đùi,Unisex
+QJ01,Quần jean,Nam
+QJ02,Quần jean,Nữ
+QJ03,Quần jean,Unisex
+QS01,Quần short,Nam
+QS02,Quần short,Nữ
+QS03,Quần short,Unisex
